@@ -2,7 +2,7 @@
 using namespace std;
 
 int n, dist, fare;
-float rate = 1.6;
+float rate = 1.00;
 string sp, dp;
 
 struct Places
@@ -17,9 +17,31 @@ Places places[11] = {
     {"maligaon", 10},
     {"machkhowa", 14},
     {"fancyBazaar", 15},
-    {"panbazar", 16},{"chandmari",20},{"commerceCollege",23},
-    {"jonali",25},{"ganeshguri",27},{"hatigaon",30}
-    };
+    {"panbazar", 16},
+    {"chandmari", 20},
+    {"commerceCollege", 23},
+    {"jonali", 25},
+    {"ganeshguri", 27},
+    {"hatigaon", 30}};
+
+struct RPlaces
+{
+    string pl;
+    float distance;
+};
+
+RPlaces rplaces[11] = {
+    {"hatigaon", 0},
+    {"ganeshguri", 5},
+    {"jonali", 10},
+    {"commerceCollege", 14},
+    {"chandmari", 15},
+    {"panbazar", 16},
+    {"fancybazaar", 20},
+    {"machkhowa", 23},
+    {"maligaon", 25},
+    {"adabari", 27},
+    {"jalukbari", 30}};
 
 void clearS()
 {
@@ -33,14 +55,35 @@ void clearS()
 int findDistance(string sp, string dp)
 {
     int start = -1, end = -1;
-    for (int i = 0; i < 11; ++i)
+    for (int i = 0; i < 11; i++)
     {
         if (places[i].pl == sp)
+        {
             start = i;
+        }
         if (places[i].pl == dp)
+        {
             end = i;
+        }
     }
     return places[end].distance - places[start].distance;
+}
+
+int RfindDistance(string sp, string dp)
+{
+    int start = -1, end = -1;
+    for (int i = 0; i < 11; i++)
+    {
+        if (rplaces[i].pl == sp)
+        {
+            start = i;
+        }
+        if (rplaces[i].pl == dp)
+        {
+            end = i;
+        }
+    }
+    return rplaces[end].distance - rplaces[start].distance;
 }
 
 int calcfare(int n, int dist, float rate)
@@ -72,7 +115,6 @@ int calcfare(int n, int dist, float rate)
     }
 }
 
-
 void display(string sp, string dp, int n, int dist)
 {
     cout << "----------BUS FARE---------" << endl;
@@ -85,17 +127,41 @@ void display(string sp, string dp, int n, int dist)
 
 int main()
 {
-    cout << "Enter start place: " << endl;
-    cin >> sp;
-    cout << "Enter destination: " << endl;
-    cin >> dp;
-    dist = findDistance(sp, dp);
-    cout << "Number of person:" << endl;
-    cin >> n;
+    char choice;
+    cout << "Ongoing or return: o/r: " << endl;
+    cin >> choice;
+    if (choice == 'o')
+    {
+        clearS();
+        cout << "Enter start place: " << endl;
+        cin >> sp;
+        cout << "Enter destination: " << endl;
+        cin >> dp;
+        dist = findDistance(sp, dp);
+        cout << "Number of person:" << endl;
+        cin >> n;
 
-    clearS();
-    display(sp, dp, n, dist);
+        clearS();
+        display(sp, dp, n, dist);
+    }
+    else if (choice == 'r')
+    {
+        clearS();
+        cout << "Enter start place: " << endl;
+        cin >> sp;
+        cout << "Enter destination: " << endl;
+        cin >> dp;
+        dist = RfindDistance(sp, dp);
+        cout << "Number of person:" << endl;
+        cin >> n;
+
+        clearS();
+        display(sp, dp, n, dist);
+    }
+    else
+    {
+        cout << "Error" << endl;
+    }
 
     return 0;
 }
-
