@@ -32,15 +32,15 @@ struct RPlaces
 
 RPlaces rplaces[11] = {
     {"hatigaon", 0},
-    {"ganeshguri", 5},
-    {"jonali", 10},
-    {"commerceCollege", 14},
-    {"chandmari", 15},
-    {"panbazar", 16},
-    {"fancybazaar", 20},
-    {"machkhowa", 23},
-    {"maligaon", 25},
-    {"adabari", 27},
+    {"ganeshguri", 3},
+    {"jonali", 5},
+    {"commerceCollege", 7},
+    {"chandmari", 10},
+    {"panbazar", 14},
+    {"fancybazaar", 15},
+    {"machkhowa", 16},
+    {"maligaon", 20},
+    {"adabari", 25},
     {"jalukbari", 30}};
 
 void clearS()
@@ -65,6 +65,11 @@ int findDistance(string sp, string dp)
         {
             end = i;
         }
+        if (start == -1 || end == -1)
+        {
+            cout << "Invalid address" << endl;
+            exit(1);
+        }
     }
     return places[end].distance - places[start].distance;
 }
@@ -82,11 +87,16 @@ int RfindDistance(string sp, string dp)
         {
             end = i;
         }
+        if (start == -1 || end == -1)
+        {
+            cout << "Invalid address" << endl;
+            exit(1);
+        }
     }
     return rplaces[end].distance - rplaces[start].distance;
 }
 
-int calcfare(int n, int dist, float rate)
+float calcfare(int n, int dist, float rate)
 {
     if (n == 0)
     {
@@ -94,25 +104,22 @@ int calcfare(int n, int dist, float rate)
     }
 
     if (dist <= 5)
-    {
         return n * 10;
-    }
-    else if (dist <= 10)
-    {
+
+    if (dist <= 10)
         return n * 15;
-    }
-    else if (dist <= 15)
-    {
+
+    if (dist <= 15)
         return n * 22;
-    }
-    else if (dist <= 20)
-    {
+
+    if (dist <= 20)
         return n * 25;
-    }
-    else
-    {
+
+    if (dist > 20)
         return (n * dist * rate);
-    }
+
+    else
+        return -1;
 }
 
 void display(string sp, string dp, int n, int dist)
@@ -122,46 +129,59 @@ void display(string sp, string dp, int n, int dist)
     cout << sp << " TO " << dp << endl;
     cout << "Distance : " << dist << " KM" << endl;
     cout << "FULL " << n << "X" << endl;
-    cout << "Fare::  Rs\033[1m" << calcfare(n, dist, rate) << "\033[0m";
+    cout << "Fare::  Rs\033[1m" << calcfare(n, dist, rate) << "\033[0m" << endl;
 }
 
 int main()
 {
-    char choice;
-    cout << "Ongoing or return: o/r: " << endl;
+    clearS();
+    char choice, ch;
+    cout << "Ongoing (jalukbari-hatigaon) or return(hatigaon-jalukbari): o/r: " << endl;
     cin >> choice;
-    if (choice == 'o')
+    do
     {
-        clearS();
-        cout << "Enter start place: " << endl;
-        cin >> sp;
-        cout << "Enter destination: " << endl;
-        cin >> dp;
-        dist = findDistance(sp, dp);
-        cout << "Number of person:" << endl;
-        cin >> n;
+        if (choice == 'o')
+        {
+            clearS();
+            cout << "Ongoing route 39(jalukbari-hatigaon)" << endl;
+            cout << "\n";
+            cout << "Enter start place: " << endl;
+            cin >> sp;
+            cout << "Enter destination: " << endl;
+            cin >> dp;
+            dist = findDistance(sp, dp);
+            cout << "Number of person:" << endl;
+            cin >> n;
 
-        clearS();
-        display(sp, dp, n, dist);
-    }
-    else if (choice == 'r')
-    {
-        clearS();
-        cout << "Enter start place: " << endl;
-        cin >> sp;
-        cout << "Enter destination: " << endl;
-        cin >> dp;
-        dist = RfindDistance(sp, dp);
-        cout << "Number of person:" << endl;
-        cin >> n;
+            clearS();
+            display(sp, dp, n, dist);
+        }
+        else if (choice == 'r')
+        {
+            clearS();
+            cout << "Returning route 39(hatigaon-jalukbari)" << endl;
+            cout << "\n";
+            cout << "Enter start place: " << endl;
+            cin >> sp;
+            cout << "Enter destination: " << endl;
+            cin >> dp;
+            dist = RfindDistance(sp, dp);
+            cout << "Number of person:" << endl;
+            cin >> n;
 
+            clearS();
+            display(sp, dp, n, dist);
+        }
+        else
+        {
+            cout << "Error" << endl;
+        }
+        cout << "\n";
+        cout << "Enter 'y' to calculate another fare: " << endl
+             << "Enter 'n' to exit and update route: ";
+        cin >> ch;
         clearS();
-        display(sp, dp, n, dist);
-    }
-    else
-    {
-        cout << "Error" << endl;
-    }
+    } while (ch == 'y');
 
     return 0;
 }
